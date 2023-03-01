@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <div class="container">
+    <div><a class="btn btn-success" href="/app01/depat/add/"> 新建部门</a></div>
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">信息展示</div>
+
+      <!-- Table -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ID</th>
+            <th>名称</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for queryson in queryset %}
+          <tr>
+            <th scope="row">1</th>
+            <td>{{ queryson.id }} </td>
+            <td>{{ queryson.title }}</td>
+            <td>
+                <a class="btn btn-primary" href="/app01/depat/edit/{{ queryson.id }}">编辑</a>
+                <a class="btn btn-danger" href="/app01/depat/del/?nid={{ queryson.id }}">删除</a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</div>
+    </div>
+{% endblock %}

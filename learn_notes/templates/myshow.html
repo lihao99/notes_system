@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="panel-body">
+    <div><a class="btn btn-success" href="/learn_notes/learn/add/"> 新建</a></div>
+    <form method="get">
+        <div class="input-group" style="width: 200px;float: right;position: absolute;top: 11%;right: 2%" >
+               <input type="text" name = 'q' class="form-control" placeholder="搜索名称" value="{{ vale }}">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </button>
+      </span>
+    </div>
+      </form>
+    <form style="display: block">
+    {% if not form %}
+        暂时未找到符合的文章
+    {% endif %}
+    {% for i in form %}
+       <div style="margin: 16px;padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 2px black;">
+        <a style="font-weight: bold;font-size: 24px" href="/learn_notes/learn/read/{{ i.id }}">{{ i.name }}</a>
+
+           <div style="width: 95%;font-size: 16px;text-indent: 1cm;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+               <span>{{ i.content }}</span>
+           </div>
+           <div style="text-align: end;font-size: 12px;margin: 8px;color: rgba(85,114,116,0.94)">{{ i.create_time }}</div>
+           <div style="text-align: end">
+                <a style="margin-right: 10px" class="btn btn-primary" href="/learn_notes/learn/edit/{{ i.id  }}">编辑</a>
+                <a class="btn btn-danger" id="delete" href="/learn_notes/learn/del/{{ i.id }}">删除</a>
+           </div>
+
+        </div>
+
+
+    {% endfor %}
+    </form>
+    <ul class="pagination">
+            {{ string_list }}
+      </ul>
+    </div>
+
+
+{% endblock %}

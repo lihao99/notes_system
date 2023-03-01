@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="post">
+            {% csrf_token %}
+            {% for item in form %}
+                <div style="display: flex;margin: 16px">
+                    <div style="width: 100px;text-align: right;padding-right: 10px">
+                        <label>{{ item.label }}:</label>
+                    </div>
+                    <div style="flex: 1;width: 100%">
+                        {{ item }}
+                    </div>
+                        {{ item.errors.0 }}
+                </div>
+            {% endfor %}
+    <div style="text-align: end;margin: 16px">作者：{{ request.session.info.name }}</div>
+    <div style="text-align: center">
+        <button type="submit" class="btn btn-default dropdown-toggle" style="background: cornflowerblue;color: white">保存</button>
+        <button type="submit" href="/learn_notes/learn/list/" class="btn btn-default dropdown-toggle">返回</button>
+    </div>
+
+
+</form>
+{% endblock %}

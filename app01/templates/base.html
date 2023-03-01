@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>笔记管理系统</title>
+    {#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">#}
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script>
+
+    </script>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">笔记管理系统</a>
+        </div>
+
+        <ul class="nav navbar-nav">
+            <li><a href="/app01/admin/register/">账号注册</a></li>
+{#            <li><a href="/app01/user/list/">用户管理</a></li>#}
+            <li><a href="/learn_notes/learn/list/">个人笔记</a></li>
+            <li><a href="/learn_notes/learn/list_all/">笔记广场</a></li>
+            <li><a href="/app01/count/num/">数据统计</a></li>
+            <li><a href="/app01/update/">图片上传</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a>{{ request.session.info.name }}</a></li>
+            <li><a href="/app01/logout">注销</a></li>
+        </ul>
+    </div>
+    </div>
+</nav>
+<div>
+    {% block content %}{% endblock %}
+</div>
+
+{% block js %}
+{% endblock %}
+</body>
+
+</html>
