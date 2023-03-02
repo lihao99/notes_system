@@ -3,7 +3,15 @@
     <br>
 
       <div style="text-align: center"><h2>{{ all_con.name }}</h2></div>
-      <div style="font-size: 16px;text-indent: 1cm;padding: 24px">{{ content }}</div>
+      <div id="content-div" style="font-size: 16px;text-indent: 1cm;padding: 24px" value="{{ content }}">{{ content }}</div>
       <div style="text-align: right;padding: 24px">{{ all_con.create_time }}</div>
     </div>
+{% endblock %}
+{% block js %}
+ <script type="text/javascript" defer="true">
+    window.onload = function () {
+       var str1 = document.getElementById("content-div").getAttribute('value');
+       document.getElementById("content-div").innerHTML = str1;
+    }
+</script>
 {% endblock %}

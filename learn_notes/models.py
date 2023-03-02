@@ -8,7 +8,6 @@ from django.db import models
 class Learn_Notes(models.Model):
     """"学习笔记"""
     name = models.CharField(verbose_name="标题", max_length=32)
-    content = models.TextField(verbose_name="内容", max_length=1024)
     create_time = models.DateTimeField(verbose_name="发布时间", auto_now_add=True)
     username = models.CharField(verbose_name="作者", max_length=32,null=True,default='')
     type_choices = (

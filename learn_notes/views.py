@@ -131,11 +131,14 @@ def learn_list_all(request):
 
 
 def learn_del(request, uid):
-    learn_notes = Learn_Notes.objects.filter(id=uid)
-    name = learn_notes.first().name
-    learn_notes.delete()
-    path = "./content_all/" + name
-    os.remove(path)
+    try:
+        learn_notes = Learn_Notes.objects.filter(id=uid)
+        name = learn_notes.first().name
+        learn_notes.delete()
+        path = "./content_all/" + name
+        os.remove(path)
+    except Exception as f:
+        return HttpResponse("f")
     return redirect('/learn_notes/learn/list/')
 
 
@@ -181,7 +184,7 @@ def learn_edit(request, uid):
         form.save()
         name = request.POST.get('name')
         path = "./content_all/" + name
-        content = request.POST.get('content')
+        content = request.POST.get('content').encode()
         with open(path, 'wb') as f:
             f.write(content)
         return redirect('/learn_notes/learn/list/')

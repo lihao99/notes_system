@@ -6,8 +6,9 @@
 
     selector: '#mytextarea',
     language:'zh_CN',
-    plugins: 'image',
-    toolbar: 'image',
+      height:'400px',
+    plugins: 'lists,advlist',
+    toolbar: 'bullist',
 images_upload_handler: function (blobInfo, succFun, failFun) {
         var xhr, formData;
         var file = blobInfo.blob();//转化为易于理解的file对象
