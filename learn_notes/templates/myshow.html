@@ -21,10 +21,6 @@
     border-radius: 10px;
     box-shadow: 0px 0px 5px 2px black;">
         <a style="font-weight: bold;font-size: 24px" href="/learn_notes/learn/read/{{ i.id }}">{{ i.name }}</a>
-
-           <div style="width: 95%;font-size: 16px;text-indent: 1cm;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-               <span>{{ i.content }}</span>
-           </div>
            <div style="text-align: end;font-size: 12px;margin: 8px;color: rgba(85,114,116,0.94)">{{ i.create_time }}</div>
            <div style="text-align: end">
                 <a style="margin-right: 10px" class="btn btn-primary" href="/learn_notes/learn/edit/{{ i.id  }}">编辑</a>

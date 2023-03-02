@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/tinymce/6.3.2/icons/default/icons.min.js"></script>
+    {% block js %}
+    {% endblock %}
     <style>
 
     </style>
@@ -36,7 +39,7 @@
             <li><a href="/learn_notes/learn/list/">个人笔记</a></li>
             <li><a href="/learn_notes/learn/list_all/">笔记广场</a></li>
             <li><a href="/app01/count/num/">数据统计</a></li>
-            <li><a href="/app01/update/">图片上传</a></li>
+{#            <li><a href="/app01/update/">图片上传</a></li>#}
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a>{{ request.session.info.name }}</a></li>
@@ -49,8 +52,6 @@
     {% block content %}{% endblock %}
 </div>
 
-{% block js %}
-{% endblock %}
 </body>
 
 </html>

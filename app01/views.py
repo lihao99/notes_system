@@ -161,7 +161,9 @@ def images_code(request):
 
 
 def test(request):
-    return render(request, 'test.html')
+    if request.method == "GET":
+        return render(request, 'test.html')
+    return HttpResponse("12")
 
 
 def count_num(request):
@@ -193,8 +195,8 @@ def chart_bar(request):
 
 #上传图片
 def update_pi(request):
-    if request.method == "GET":
-        return render(request, 'update_pi.html')
+    # if request.method == "GET":
+    #     return render(request, 'update_pi.html')
 
     object_name = request.FILES.get("avatar")
     path = "./pict/"+object_name.name

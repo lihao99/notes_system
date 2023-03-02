@@ -1,4 +1,5 @@
 import datetime
+import os.path
 import time
 
 from django import forms
@@ -12,7 +13,7 @@ from .models import Learn_Notes
 class LearnNotes(forms.ModelForm):
     class Meta:
         model = Learn_Notes
-        fields = ['name', 'content', 'create_type']
+        fields = ['name', 'create_type']
         widgets = {
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 15})  # 设置样式
         }
@@ -130,7 +131,11 @@ def learn_list_all(request):
 
 
 def learn_del(request, uid):
-    Learn_Notes.objects.filter(id=uid).delete()
+    learn_notes = Learn_Notes.objects.filter(id=uid)
+    name = learn_notes.first().name
+    learn_notes.delete()
+    path = "./content_all/" + name
+    os.remove(path)
     return redirect('/learn_notes/learn/list/')
 
 
@@ -141,33 +146,42 @@ def learn_add(request):
     # request.POST
     username = request.session['info']['name']
     name = request.POST.get('name')
-    content = request.POST.get('content')
     create_type = request.POST.get('create_type')
-    cert = Learn_Notes(name=name, content=content, username=username, create_type=create_type)
+    content = request.POST.get('content').encode()
+    path = "./content_all/" + name
+    with open(path, 'wb') as f:
+        f.write(content)
+    cert = Learn_Notes(name=name, username=username, create_type=create_type)
     cert.save()
     return redirect('/learn_notes/learn/list/')
-    # form = LearnNotes(data=request.POST)
-    # if form.is_valid():
-    #     form.save()
-    #     username = request.session['info']['name']
-    #     print(username)
-    #
-    #     return redirect('/learn_notes/learn/list/')
 
+def re_con(func):
+    name = func.name
+    path = "./content_all/" + name
+    with open(path, 'rb') as f:
+        content = f.read().decode()
+    return content
 
 # 详情
 def learn_read(request, uid):
     all_con = Learn_Notes.objects.filter(id=uid).first()
-    return render(request, 'read.html', {'all_con': all_con})
+    content = re_con(all_con)
+    return render(request, 'read.html', {'all_con': all_con, 'content': content})
 
 
 def learn_edit(request, uid):
     all_con = Learn_Notes.objects.filter(id=uid).first()
+    content = re_con(all_con)
     if request.method == 'GET':
         form = LearnNotes(instance=all_con)
-        return render(request, 'edit_note.html', {'form': form})
+        return render(request, 'edit_note.html', {'form': form,'content':content})
 
     form = LearnNotes(data=request.POST, instance=all_con)
     if form.is_valid():
         form.save()
+        name = request.POST.get('name')
+        path = "./content_all/" + name
+        content = request.POST.get('content')
+        with open(path, 'wb') as f:
+            f.write(content)
         return redirect('/learn_notes/learn/list/')

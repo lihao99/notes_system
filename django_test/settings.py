@@ -125,9 +125,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #跨域设置
 # 允许所有源访问
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
 # 跨域白名单  (与允许所有源访问 二选一即可
-CORS_ORIGIN_WHITELIST = ('http://192.168.0.102:8080',)
+# CORS_ORIGIN_WHITELIST = ('http://192.168.0.102:8080',)
 # 允许带着cookie
 CORS_ALLOW_CREDENTIALS = True
 # 允许请求头

@@ -1,4 +1,39 @@
 {% extends 'base.html' %}
+{% block js %}
+      <script src="https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js"></script>
+  <script>
+  tinymce.init({
+
+    selector: '#mytextarea',
+    language:'zh_CN',
+    plugins: 'image',
+    toolbar: 'image',
+images_upload_handler: function (blobInfo, succFun, failFun) {
+        var xhr, formData;
+        var file = blobInfo.blob();//转化为易于理解的file对象
+        xhr = new XMLHttpRequest();
+        xhr.withCredentials = false;
+        xhr.open('POST', '/app01/update/');
+        xhr.onload = function() {
+            var json;
+            if (xhr.status != 200) {
+                failFun('HTTP Error: ' + xhr.status);
+                return;
+            }
+            json = JSON.parse(xhr.responseText);
+            if (!json || typeof json.location != 'string') {
+                failFun('Invalid JSON: ' + xhr.responseText);
+                return;
+            }
+            succFun(json.location);
+        };
+        formData = new FormData();
+        formData.append('file', file, file.name );//此处与源文档不一样
+        xhr.send(formData);
+    }
+});
+  </script>
+{% endblock %}
 {% block content %}
     <div class="panel-body">
     <form method="post">
@@ -7,9 +42,12 @@
     {% for i in form %}
         <div style="display: flex;margin: 16px">
             <div style="width: 100px;text-align: right;padding-right: 10px">{{ i.label }}:</div>
-            <div onkeydown="enter()" style="flex: 1;width: 100%;">{{ i }}</div>
+            <div style="flex: 1;width: 100%;">{{ i }}</div>
         </div>
     {% endfor %}
+    <div style="display: flex;margin: 16px">
+        <div style="width: 100px;text-align: right;padding-right: 10px">内容:</div>
+        <textarea style="flex: 1;width: 100%;"id="mytextarea" name="content"></textarea></div>
     <div style="text-align: end">作者：{{ request.session.info.name }}</div>
         <div style="text-align: center"><button type="submit" class="btn btn-primary">发布</button></div>
     </form>
