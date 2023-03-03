@@ -1,7 +1,7 @@
 import datetime
 import os.path
 import time
-
+from django_redis import get_redis_connection
 from django import forms
 from django.shortcuts import HttpResponse, render, redirect
 from django.utils.safestring import mark_safe
@@ -158,6 +158,7 @@ def learn_add(request):
     cert.save()
     return redirect('/learn_notes/learn/list/')
 
+
 def re_con(func):
     name = func.name
     path = "./content_all/" + name
@@ -165,11 +166,32 @@ def re_con(func):
         content = f.read().decode()
     return content
 
+
 # 详情
 def learn_read(request, uid):
+    redis_conn = get_redis_connection("default")
     all_con = Learn_Notes.objects.filter(id=uid).first()
-    content = re_con(all_con)
-    return render(request, 'read.html', {'all_con': all_con, 'content': content})
+    name = all_con.name
+    username = request.session['info']['name']
+    if request.method == "GET":
+        # islike=  redis_conn.hget(name,username)
+        content = re_con(all_con)
+        num_likes = all_con.num_likes
+        return render(request, 'read.html',
+                      {'all_con': all_con, 'content': content, 'num_likes': num_likes, 'islike': "1"})
+    if request.POST['bb'] == "1":
+        redis_conn.hset(name,  "1")
+        islike = "1"
+        num_likes = str(all_con.num_likes + 1)
+        # 数据库加一
+        Learn_Notes.objects.filter(id=uid).update(num_likes=num_likes)
+    else:
+        redis_conn.hset(name, username, "0")
+        islike = "0"
+        num_likes = str(all_con.num_likes - 1)
+        Learn_Notes.objects.filter(id=uid).update(num_likes=num_likes)
+
+    return render(request, 'read.html', {'all_con': all_con, 'num_likes': num_likes, 'islike': islike})
 
 
 def learn_edit(request, uid):
@@ -177,7 +199,7 @@ def learn_edit(request, uid):
     content = re_con(all_con)
     if request.method == 'GET':
         form = LearnNotes(instance=all_con)
-        return render(request, 'edit_note.html', {'form': form,'content':content})
+        return render(request, 'edit_note.html', {'form': form, 'content': content})
 
     form = LearnNotes(data=request.POST, instance=all_con)
     if form.is_valid():

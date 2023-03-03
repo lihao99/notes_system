@@ -1,17 +1,63 @@
 {% extends 'base.html' %}
 {% block content %}
     <br>
-
+    <form method="get">
+    {% csrf_token %}
       <div style="text-align: center"><h2>{{ all_con.name }}</h2></div>
       <div id="content-div" style="font-size: 16px;text-indent: 1cm;padding: 24px" value="{{ content }}">{{ content }}</div>
       <div style="text-align: right;padding: 24px">{{ all_con.create_time }}</div>
-    </div>
+
+        <div class="loves" style="width: 30px;height: 30px;float: right;margin-right:48px ;display: flex;align-items: center">
+             <button type="submit" value="{{ love }}"><p class="like">&#10084;</p></button>
+             <p id="tag">{{ num_likes }}<p>
+                <p style="display: none" id="tag1" value="{{ islike }}">{{ islike }}<p>
+
+        </div>
+      </div>
+    </form>
 {% endblock %}
 {% block js %}
+ <style>
+  .loves {
+      text-align: right;
+      padding: 16px;
+  }
+.like{
+    font-size:28px;
+    color:#ccc;
+    cursor:pointer;
+    margin-right: 10px;
+}
+.cs{color:#f00;}
+
+ </style>
  <script type="text/javascript" defer="true">
     window.onload = function () {
        var str1 = document.getElementById("content-div").getAttribute('value');
        document.getElementById("content-div").innerHTML = str1;
+       const str2 = document.getElementById("tag1").getAttribute("value");
+       const dom2 = document.getElementsByClassName("like");
+       {#console.log(dom2,'11');#}
+       if (str2 == '1') {
+            dom2[0].className = 'like cs';
+       } else {
+           dom2[0].className = 'like';
+       }
     }
+
+
+    let love = 0;
+    $(function () {
+            $(".like").click(function () {
+                $(this).toggleClass('cs');
+                const doc2 = document.getElementsByClassName('cs');
+                if (doc2.length) {
+                    love ++;
+                } else {
+                    love --;
+                }
+                document.getElementById('tag').innerHTML = love;
+            })
+        })
 </script>
 {% endblock %}
