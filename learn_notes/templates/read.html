@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
     <br>
-    <form method="get">
+    <form method="post">
     {% csrf_token %}
       <div style="text-align: center"><h2>{{ all_con.name }}</h2></div>
       <div id="content-div" style="font-size: 16px;text-indent: 1cm;padding: 24px" value="{{ content }}">{{ content }}</div>
       <div style="text-align: right;padding: 24px">{{ all_con.create_time }}</div>
 
         <div class="loves" style="width: 30px;height: 30px;float: right;margin-right:48px ;display: flex;align-items: center">
-             <button type="submit" value="{{ love }}"><p class="like">&#10084;</p></button>
-             <p id="tag">{{ num_likes }}<p>
+             <button class="love-btn" type="submit" name = "bb" value="{{ love }}"><p class="like">&#10084;</p></button>
+{#             点赞总数#}
+            <p id="tag">{{ num_likes }}<p>
+{#            判断是否点赞#}
                 <p style="display: none" id="tag1" value="{{ islike }}">{{ islike }}<p>
 
         </div>
@@ -52,11 +54,14 @@
                 $(this).toggleClass('cs');
                 const doc2 = document.getElementsByClassName('cs');
                 if (doc2.length) {
-                    love ++;
+                    // 点赞
+                    love = 1;
                 } else {
-                    love --;
+                    // 取消点赞
+                    love = 0;
                 }
-                document.getElementById('tag').innerHTML = love;
+                {#document.getElementById('tag').innerHTML = love;#}
+                document.getElementsByClassName('love-btn')[0].setAttribute('value', love);
             })
         })
 </script>

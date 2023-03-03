@@ -173,25 +173,26 @@ def learn_read(request, uid):
     all_con = Learn_Notes.objects.filter(id=uid).first()
     name = all_con.name
     username = request.session['info']['name']
+    content = re_con(all_con)
     if request.method == "GET":
-        # islike=  redis_conn.hget(name,username)
-        content = re_con(all_con)
+        islike = redis_conn.hget(name, username)
         num_likes = all_con.num_likes
         return render(request, 'read.html',
-                      {'all_con': all_con, 'content': content, 'num_likes': num_likes, 'islike': "1"})
+                      {'all_con': all_con, 'content': content, 'num_likes': num_likes, 'islike': islike})
     if request.POST['bb'] == "1":
-        redis_conn.hset(name,  "1")
         islike = "1"
         num_likes = str(all_con.num_likes + 1)
+        redis_conn.hset(name, username, num_likes)
         # 数据库加一
         Learn_Notes.objects.filter(id=uid).update(num_likes=num_likes)
     else:
-        redis_conn.hset(name, username, "0")
         islike = "0"
         num_likes = str(all_con.num_likes - 1)
+        redis_conn.hset(name, username, num_likes)
+
         Learn_Notes.objects.filter(id=uid).update(num_likes=num_likes)
 
-    return render(request, 'read.html', {'all_con': all_con, 'num_likes': num_likes, 'islike': islike})
+    return render(request, 'read.html', {'content': content,'all_con': all_con, 'num_likes': num_likes, 'islike': islike})
 
 
 def learn_edit(request, uid):
