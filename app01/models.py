@@ -28,3 +28,9 @@ class UserInfo(models.Model):
 class AdminTable(models.Model):
     name = models.CharField(verbose_name='账号', max_length=32, null=False, unique=True)
     password = models.CharField(verbose_name='密码', max_length=32)
+
+    class Meta:
+        verbose_name_plural = verbose_name = '添加用户'
+
+    def __str__(self) -> str:
+        return f'{self.name}'
