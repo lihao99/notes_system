@@ -92,7 +92,8 @@ def admin_register(request):
     form = AdminForm(data=request.POST)
     if form.is_valid():
         form.save()
-        return redirect('/app01/user/list')
+        request.session.clear()
+        return redirect('/app01/login/')
     else:
         return render(request, 'register.html', {'form': form})
 
