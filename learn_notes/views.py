@@ -176,18 +176,27 @@ def learn_read(request, uid):
     content = re_con(all_con)
     if request.method == "GET":
         islike = redis_conn.hget(name, username)
-        num_likes = all_con.num_likes
+        try:
+            num_likes = all_con.num_likes
+        except:
+            num_likes = "0"
         return render(request, 'read.html',
                       {'all_con': all_con, 'content': content, 'num_likes': num_likes, 'islike': islike})
     if request.POST['bb'] == "1":
         islike = "1"
         num_likes = str(all_con.num_likes + 1)
-        redis_conn.hset(name, username, num_likes)
+        try:
+            redis_conn.hset(name, username, num_likes)
+        except:
+            return HttpResponse("请确认redis是否开启")
         # 数据库加一
         Learn_Notes.objects.filter(id=uid).update(num_likes=num_likes)
     else:
         islike = "0"
-        num_likes = str(all_con.num_likes - 1)
+        try:
+            num_likes = str(all_con.num_likes - 1)
+        except:
+            return HttpResponse("请确认redis是否开启")
         redis_conn.hset(name, username, num_likes)
 
         Learn_Notes.objects.filter(id=uid).update(num_likes=num_likes)
